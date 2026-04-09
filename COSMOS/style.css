@@ -1,0 +1,672 @@
+/* ================================================
+   COSMOS — Revista de Astronomía | style.css
+   
+   ESTRUCTURA DEL ARCHIVO:
+   1. Variables (tokens de diseño)
+   2. Reset y base
+   3. Header y navegación
+   4. Secciones de contenido
+   5. Componentes (cards, botones, badges)
+   6. Animaciones
+   7. Footer
+   ================================================ */
+
+
+/* ================================================
+   1. VARIABLES CSS
+   Definidas en :root = disponibles en TODO el archivo
+   Se acceden con var(--nombre-variable)
+   ================================================ */
+:root {
+  /* Colores */
+  --negro:        #04050a;
+  --azul-oscuro:  #080d1a;
+  --azul-medio:   #0d1f3c;
+  --acento:       #c8a96e;   /* Dorado cósmico */
+  --acento-glow:  rgba(200, 169, 110, 0.25);
+  --blanco:       #f0eee8;
+  --gris-texto:   #9a9db0;
+
+  /* Tipografía */
+  --fuente-titulo: 'Playfair Display', serif;
+  --fuente-cuerpo: 'Space Mono', monospace;
+
+  /* Espaciado */
+  --espacio-s:  0.75rem;   /* ~12px */
+  --espacio-m:  1.5rem;    /* ~24px */
+  --espacio-l:  3rem;      /* ~48px */
+  --espacio-xl: 6rem;      /* ~96px */
+
+  /* Bordes */
+  --radio:       8px;
+  --radio-pill:  100px;
+}
+
+
+/* ================================================
+   2. RESET Y BASE
+   Normalizamos comportamientos del navegador
+   ================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;   /* El padding no aumenta el tamaño del elemento */
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;  /* Desplazamiento suave en vínculos internos */
+}
+
+body {
+  background-color: var(--negro);
+  color: var(--blanco);
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  overflow-x: hidden;       /* Evita scroll horizontal indeseado */
+}
+
+/* Fondo estrellado animado */
+body::before {
+  content: '';
+  position: fixed;          /* Fijo: se queda quieto al hacer scroll */
+  inset: 0;                 /* top, right, bottom, left = 0 */
+  background-image:
+    radial-gradient(1px 1px at 20% 15%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 60%, white 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 80% 30%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 80%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 90%, white 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 45%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 70%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 20%, white 0%, transparent 100%);
+  opacity: 0.4;
+  pointer-events: none;     /* Las estrellas no "bloquean" los clics */
+  z-index: 0;
+}
+
+/* Todos los contenedores van sobre el fondo */
+header, main, footer {
+  position: relative;
+  z-index: 1;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--fuente-titulo);
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+
+/* ================================================
+   3. HEADER Y NAVEGACIÓN
+   position: sticky → se queda visible al hacer scroll
+   ================================================ */
+header {
+  display: flex;              /* Hijos en fila */
+  align-items: center;        /* Centra verticalmente */
+  justify-content: space-between; /* Logo a la izq, nav a la der */
+  padding: var(--espacio-m) var(--espacio-l);
+  border-bottom: 1px solid rgba(200, 169, 110, 0.15);
+  position: sticky;
+  top: 0;
+  background-color: rgba(4, 5, 10, 0.85);
+  backdrop-filter: blur(12px); /* Efecto cristal */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-s);
+}
+
+.logo-symbol {
+  color: var(--acento);
+  font-size: 1.5rem;
+  animation: rotar 12s linear infinite;
+}
+
+.logo h1 {
+  font-size: 1.6rem;
+  letter-spacing: 0.3em;
+  color: var(--acento);
+}
+
+.tagline {
+  font-size: 0.65rem;
+  color: var(--gris-texto);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+nav ul {
+  display: flex;
+  gap: var(--espacio-m);
+}
+
+nav a {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gris-texto);
+  padding: 0.4rem 0;
+  border-bottom: 1px solid transparent; /* Invisible pero reserva espacio */
+  transition: all 0.3s ease;            /* Transición suave en hover */
+}
+
+/* Pseudoclase :hover → aplica cuando el cursor está encima */
+nav a:hover {
+  color: var(--acento);
+  border-bottom-color: var(--acento);
+}
+
+
+/* ================================================
+   4. SECCIONES DE CONTENIDO
+   ================================================ */
+
+/* --- HERO --- */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 90vh;           /* Al menos 90% de la altura de la ventana */
+  padding: var(--espacio-xl) var(--espacio-l);
+  gap: var(--espacio-l);
+}
+
+.hero-content {
+  max-width: 540px;
+}
+
+.hero-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: var(--espacio-m);
+}
+
+.hero-content h2 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem); /* Tamaño fluido según la pantalla */
+  line-height: 1.1;
+  margin-bottom: var(--espacio-m);
+}
+
+.hero-content em {
+  font-style: italic;
+  color: var(--acento);
+}
+
+.hero-desc {
+  color: var(--gris-texto);
+  font-size: 0.85rem;
+  margin-bottom: var(--espacio-l);
+  max-width: 400px;
+}
+
+/* Planeta animado en el hero */
+.hero-visual {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  flex-shrink: 0;
+}
+
+.planet {
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle at 35% 35%,
+    #3a5a9e 0%, #1a2a5e 50%, #080d20 100%);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 40px rgba(58, 90, 158, 0.4),
+    inset -20px -10px 30px rgba(0,0,0,0.5);
+}
+
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: orbitar linear infinite;
+}
+
+.orbit-1 {
+  width: 230px;
+  height: 230px;
+  animation-duration: 8s;
+}
+
+.orbit-2 {
+  width: 300px;
+  height: 300px;
+  animation-duration: 14s;
+  animation-direction: reverse;
+}
+
+.moon {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--acento);
+  border-radius: 50%;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.moon-2 {
+  width: 8px;
+  height: 8px;
+  background: var(--gris-texto);
+  top: -4px;
+}
+
+
+/* --- SECCIONES GENERALES --- */
+.seccion-articulos,
+.seccion-galaxias,
+.seccion-contacto {
+  padding: var(--espacio-xl) var(--espacio-l);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.seccion-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--espacio-m);
+  margin-bottom: var(--espacio-l);
+}
+
+.seccion-num {
+  font-size: 4rem;
+  font-family: var(--fuente-titulo);
+  color: rgba(200, 169, 110, 0.12);
+  line-height: 1;
+  user-select: none;   /* No se puede seleccionar con el cursor */
+}
+
+.seccion-header h2 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+}
+
+
+/* ================================================
+   5. COMPONENTES
+   ================================================ */
+
+/* --- BOTÓN PRIMARIO --- */
+.btn-primary {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: var(--acento);
+  color: var(--negro);
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--radio-pill);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--blanco);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--acento-glow);
+}
+
+
+/* --- CARDS DE ARTÍCULOS --- */
+.grid-articulos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--espacio-m);
+}
+
+.card {
+  background: var(--azul-medio);
+  border: 1px solid rgba(200, 169, 110, 0.1);
+  border-radius: var(--radio);
+  padding: var(--espacio-l) var(--espacio-m);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Línea decorativa superior */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--acento), transparent);
+  transform: scaleX(0);           /* Empieza invisible */
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+.card:hover::before {
+  transform: scaleX(1);           /* Aparece en hover */
+}
+
+.card-badge {
+  position: absolute;
+  top: var(--espacio-m);
+  right: var(--espacio-m);
+  background: var(--acento);
+  color: var(--negro);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radio-pill);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--espacio-m);
+}
+
+.card h3 {
+  font-size: 1.4rem;
+  margin-bottom: var(--espacio-s);
+  color: var(--blanco);
+}
+
+.card p {
+  color: var(--gris-texto);
+  font-size: 0.8rem;
+  margin-bottom: var(--espacio-m);
+}
+
+.card-link {
+  font-size: 0.75rem;
+  color: var(--acento);
+  letter-spacing: 0.05em;
+  transition: letter-spacing 0.2s ease;
+}
+
+.card-link:hover {
+  letter-spacing: 0.15em;
+}
+
+
+/* --- GALAXIAS Y FILTROS --- */
+.filtros {
+  display: flex;
+  gap: var(--espacio-s);
+  margin-bottom: var(--espacio-l);
+  flex-wrap: wrap;
+}
+
+.filtro-btn {
+  padding: 0.5rem 1.2rem;
+  background: transparent;
+  border: 1px solid rgba(200, 169, 110, 0.3);
+  border-radius: var(--radio-pill);
+  color: var(--gris-texto);
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filtro-btn:hover,
+.filtro-btn.activo {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: var(--negro);
+  font-weight: 700;
+}
+
+.grid-galaxias {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--espacio-m);
+}
+
+.galaxia-item {
+  background: var(--azul-oscuro);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radio);
+  padding: var(--espacio-m);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.galaxia-item:hover {
+  border-color: var(--acento);
+  transform: scale(1.04);
+}
+
+/* Clase usada por JS para ocultar galaxias filtradas */
+.galaxia-item.oculto {
+  display: none;
+}
+
+.galaxia-img {
+  font-size: 3rem;
+  margin-bottom: var(--espacio-s);
+}
+
+.galaxia-item h4 {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.tipo-badge {
+  font-size: 0.65rem;
+  color: var(--acento);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+
+/* --- CONTADOR ANIMADO --- */
+.seccion-datos {
+  padding: var(--espacio-xl) var(--espacio-l);
+  display: flex;
+  justify-content: center;
+}
+
+.dato-card {
+  text-align: center;
+  padding: var(--espacio-xl) var(--espacio-xl);
+  border: 1px solid rgba(200, 169, 110, 0.15);
+  border-radius: var(--radio);
+  background: radial-gradient(ellipse at center, var(--azul-medio) 0%, transparent 70%);
+}
+
+.dato-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gris-texto);
+  margin-bottom: var(--espacio-m);
+}
+
+.contador {
+  font-family: var(--fuente-titulo);
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 900;
+  color: var(--acento);
+  line-height: 1;
+  margin-bottom: var(--espacio-s);
+}
+
+.dato-unidad {
+  color: var(--gris-texto);
+  font-size: 0.8rem;
+}
+
+
+/* --- CONTACTO --- */
+.contacto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--espacio-xl);
+  align-items: start;
+}
+
+.contacto-info p {
+  color: var(--gris-texto);
+  margin-bottom: var(--espacio-l);
+  font-size: 0.85rem;
+}
+
+.redes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-s);
+}
+
+.red-link {
+  font-size: 0.8rem;
+  color: var(--gris-texto);
+  transition: color 0.2s ease;
+  letter-spacing: 0.05em;
+}
+
+.red-link:hover {
+  color: var(--acento);
+}
+
+.form-contacto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-s);
+}
+
+.form-contacto input,
+.form-contacto textarea {
+  background: var(--azul-medio);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radio);
+  padding: 0.75rem 1rem;
+  color: var(--blanco);
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.8rem;
+  transition: border-color 0.2s ease;
+  resize: vertical;      /* Solo redimensionable verticalmente */
+}
+
+.form-contacto input::placeholder,
+.form-contacto textarea::placeholder {
+  color: var(--gris-texto);
+}
+
+/* Pseudoclase :focus → cuando el campo está seleccionado */
+.form-contacto input:focus,
+.form-contacto textarea:focus {
+  outline: none;
+  border-color: var(--acento);
+}
+
+.confirmacion {
+  margin-top: var(--espacio-m);
+  padding: var(--espacio-m);
+  background: rgba(200, 169, 110, 0.1);
+  border: 1px solid var(--acento);
+  border-radius: var(--radio);
+  color: var(--acento);
+  text-align: center;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+
+/* Clase utilitaria — usada por JS para mostrar/ocultar */
+.oculto {
+  display: none;
+}
+
+
+/* ================================================
+   6. ANIMACIONES (@keyframes)
+   Define los "fotogramas" de la animación
+   ================================================ */
+@keyframes rotar {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbitar {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ================================================
+   7. FOOTER
+   ================================================ */
+footer {
+  border-top: 1px solid rgba(200, 169, 110, 0.1);
+  padding: var(--espacio-l);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--espacio-m);
+}
+
+.footer-content .logo-symbol {
+  color: var(--acento);
+  font-size: 1.2rem;
+  animation: rotar 12s linear infinite;
+}
+
+.footer-content p {
+  color: var(--gris-texto);
+  font-size: 0.75rem;
+}
+
+.footer-link {
+  font-size: 0.75rem;
+  color: var(--acento);
+  letter-spacing: 0.1em;
+  transition: letter-spacing 0.2s ease;
+}
+
+.footer-link:hover {
+  letter-spacing: 0.2em;
+}

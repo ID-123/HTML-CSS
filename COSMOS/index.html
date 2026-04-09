@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <!-- ==========================================
+       HEAD: Todo aquí es para el NAVEGADOR
+       El usuario NO ve este contenido directamente
+  ========================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COSMOS — Revista de Astronomía</title>
+
+  <!-- Vínculo EXTERNO: conectamos un archivo CSS propio -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Vínculo EXTERNO: fuente de Google Fonts (recurso externo) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+
+<body>
+
+  <!-- ==========================================
+       HEADER: Encabezado principal de la página
+       Contiene logo + navegación
+  ========================================== -->
+  <header id="inicio">
+
+    <div class="logo">
+      <span class="logo-symbol">✦</span>
+      <h1>COSMOS</h1>
+      <p class="tagline">Revista de Astronomía</p>
+    </div>
+
+    <!-- NAV: Menú de navegación -->
+    <!-- Los href="#id" son vínculos INTERNOS — navegan dentro de la misma página -->
+    <nav>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#articulos">Artículos</a></li>
+        <li><a href="#galaxias">Galaxias</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+
+  </header>
+
+  <!-- ==========================================
+       MAIN: Contenido principal
+       Solo debe haber UN <main> por página
+  ========================================== -->
+  <main>
+
+    <!-- SECCIÓN HERO: Portada / presentación -->
+    <section class="hero">
+      <div class="hero-content">
+        <p class="hero-label">Edición Especial</p>
+        <h2>El Universo<br /><em>Nunca Duerme</em></h2>
+        <p class="hero-desc">
+          Explora los misterios del cosmos: desde agujeros negros hasta
+          nebulosas que pintan el cielo con colores imposibles.
+        </p>
+        <!-- Vínculo INTERNO: lleva al usuario a la sección #articulos -->
+        <a href="#articulos" class="btn-primary">Explorar Ahora</a>
+      </div>
+      <div class="hero-visual">
+        <div class="planet"></div>
+        <div class="orbit orbit-1"><span class="moon"></span></div>
+        <div class="orbit orbit-2"><span class="moon moon-2"></span></div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN ARTÍCULOS: Tarjetas de contenido -->
+    <!-- El id="articulos" es el destino del vínculo interno del nav -->
+    <section id="articulos" class="seccion-articulos">
+
+      <div class="seccion-header">
+        <span class="seccion-num">01</span>
+        <h2>Últimas Exploraciones</h2>
+      </div>
+
+      <div class="grid-articulos">
+
+        <!-- ARTICLE: Unidad de contenido independiente -->
+        <article class="card" data-tema="agujeros-negros">
+          <div class="card-badge">Destacado</div>
+          <div class="card-icon">⚫</div>
+          <h3>Sagitario A*</h3>
+          <p>El agujero negro supermasivo en el centro de la Vía Láctea,
+             con una masa de 4 millones de soles.</p>
+          <!-- Vínculo EXTERNO: abre recurso fuera de nuestro sitio -->
+          <!-- target="_blank" abre en nueva pestaña -->
+          <!-- rel="noopener" es buena práctica de seguridad -->
+          <a href="https://es.wikipedia.org/wiki/Sagitario_A*"
+             target="_blank"
+             rel="noopener"
+             class="card-link">Leer más →</a>
+        </article>
+
+        <article class="card" data-tema="nebulosas">
+          <div class="card-icon">🌌</div>
+          <h3>Nebulosa del Águila</h3>
+          <p>Los famosos "Pilares de la Creación", columnas de gas y polvo
+             donde nacen nuevas estrellas cada día.</p>
+          <a href="https://es.wikipedia.org/wiki/Nebulosa_del_%C3%81guila"
+             target="_blank"
+             rel="noopener"
+             class="card-link">Leer más →</a>
+        </article>
+
+        <article class="card" data-tema="exoplanetas">
+          <div class="card-icon">🪐</div>
+          <h3>Kepler-452b</h3>
+          <p>Apodado "la Tierra 2.0", este exoplaneta orbita una estrella
+             similar al Sol en la zona habitable.</p>
+          <a href="https://es.wikipedia.org/wiki/Kepler-452b"
+             target="_blank"
+             rel="noopener"
+             class="card-link">Leer más →</a>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN GALAXIAS: Con filtros interactivos (JS) -->
+    <section id="galaxias" class="seccion-galaxias">
+
+      <div class="seccion-header">
+        <span class="seccion-num">02</span>
+        <h2>Catálogo de Galaxias</h2>
+      </div>
+
+      <!-- Botones de filtro — controlados por JavaScript -->
+      <div class="filtros" id="filtros">
+        <button class="filtro-btn activo" data-filtro="todas">Todas</button>
+        <button class="filtro-btn" data-filtro="espiral">Espirales</button>
+        <button class="filtro-btn" data-filtro="eliptica">Elípticas</button>
+        <button class="filtro-btn" data-filtro="irregular">Irregulares</button>
+      </div>
+
+      <div class="grid-galaxias" id="grid-galaxias">
+
+        <div class="galaxia-item" data-tipo="espiral">
+          <div class="galaxia-img espiral-img">🌀</div>
+          <h4>Vía Láctea</h4>
+          <span class="tipo-badge">Espiral</span>
+        </div>
+
+        <div class="galaxia-item" data-tipo="espiral">
+          <div class="galaxia-img espiral-img">🌀</div>
+          <h4>Andrómeda</h4>
+          <span class="tipo-badge">Espiral</span>
+        </div>
+
+        <div class="galaxia-item" data-tipo="eliptica">
+          <div class="galaxia-img eliptica-img">⚪</div>
+          <h4>M87</h4>
+          <span class="tipo-badge">Elíptica</span>
+        </div>
+
+        <div class="galaxia-item" data-tipo="irregular">
+          <div class="galaxia-img irregular-img">✨</div>
+          <h4>Nube de Magallanes</h4>
+          <span class="tipo-badge">Irregular</span>
+        </div>
+
+        <div class="galaxia-item" data-tipo="eliptica">
+          <div class="galaxia-img eliptica-img">⚪</div>
+          <h4>IC 1101</h4>
+          <span class="tipo-badge">Elíptica</span>
+        </div>
+
+        <div class="galaxia-item" data-tipo="espiral">
+          <div class="galaxia-img espiral-img">🌀</div>
+          <h4>NGC 1300</h4>
+          <span class="tipo-badge">Espiral</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN DATO DEL DÍA: Contador animado -->
+    <section class="seccion-datos">
+      <div class="dato-card">
+        <p class="dato-label">Estrellas en el universo observable</p>
+        <div class="contador" id="contador" data-objetivo="200000000000">0</div>
+        <p class="dato-unidad">× 10<sup>12</sup> soles estimados</p>
+      </div>
+    </section>
+
+    <!-- SECCIÓN CONTACTO -->
+    <section id="contacto" class="seccion-contacto">
+
+      <div class="seccion-header">
+        <span class="seccion-num">03</span>
+        <h2>Únete a la Misión</h2>
+      </div>
+
+      <div class="contacto-grid">
+
+        <div class="contacto-info">
+          <p>¿Tienes una teoría? ¿Captaste algo en tu telescopio?
+             Escríbenos. El universo es demasiado grande para explorarlo solos.</p>
+
+          <!-- Vínculos EXTERNOS de redes sociales -->
+          <div class="redes">
+            <a href="https://x.com" target="_blank" rel="noopener" class="red-link">𝕏 Twitter</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="red-link">◉ Instagram</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener" class="red-link">▶ YouTube</a>
+          </div>
+        </div>
+
+        <!-- Formulario de contacto — manejado por JS -->
+        <form id="form-contacto" class="form-contacto">
+          <input
+            type="text"
+            id="nombre"
+            placeholder="Tu nombre"
+            required
+          />
+          <input
+            type="email"
+            id="email"
+            placeholder="tu@email.com"
+            required
+          />
+          <textarea
+            id="mensaje"
+            placeholder="Tu mensaje al universo..."
+            rows="4"
+          ></textarea>
+          <button type="submit" class="btn-primary">Enviar Señal ✦</button>
+        </form>
+
+      </div>
+
+      <!-- Mensaje de confirmación (oculto por defecto, JS lo muestra) -->
+      <div id="confirmacion" class="confirmacion oculto">
+        ✦ ¡Señal recibida! Nos contactaremos pronto.
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       FOOTER: Pie de página
+       Cierre del sitio + vínculo de regreso al inicio
+  ========================================== -->
+  <footer>
+    <div class="footer-content">
+      <span class="logo-symbol">✦</span>
+      <p>COSMOS © 2026 — Todos los derechos reservados</p>
+      <!-- Vínculo INTERNO: regresa al inicio -->
+      <a href="#inicio" class="footer-link">↑ Volver al inicio</a>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       SCRIPT: el JS va AL FINAL del body
+       Razón: el HTML debe cargarse ANTES que el JS
+       para que el JS pueda encontrar los elementos
+  ========================================== -->
+  <script src="script.js"></script>
+
+</body>
+</html>
