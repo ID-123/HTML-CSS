@@ -86,7 +86,12 @@ body::before {
 }
 
 /* Todos los contenedores van sobre el fondo */
-header, main, footer {
+header {
+  position: relative;
+  z-index: 2;
+}
+
+main, footer {
   position: relative;
   z-index: 1;
 }
