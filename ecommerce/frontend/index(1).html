@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merkado — Tienda en línea</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     NAVBAR ESTÁTICA
+══════════════════════════════════════════════ -->
+<header class="navbar" id="navbar">
+  <div class="navbar__brand">
+    <span class="brand-icon">⬡</span>
+    <span class="brand-name">Merkado</span>
+  </div>
+
+  <nav class="navbar__links">
+    <a href="#" class="nav-link active" data-page="home">Inicio</a>
+    <a href="#" class="nav-link" data-page="categories">Categorías</a>
+    <a href="#" class="nav-link" data-page="promos">Promociones</a>
+    <a href="#" class="nav-link" data-page="contact">Contáctanos</a>
+  </nav>
+
+  <div class="navbar__search">
+    <div class="search-wrap">
+      <input type="text" id="globalSearch" placeholder="Buscar producto…" autocomplete="off"/>
+      <button class="search-btn" onclick="searchProducts()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+    <div class="search-dropdown" id="searchDropdown"></div>
+  </div>
+
+  <div class="navbar__actions">
+    <!-- Usuario no logueado -->
+    <div id="authButtons" class="auth-buttons">
+      <button class="btn btn--ghost" onclick="openModal('loginModal')">Ingresar</button>
+      <button class="btn btn--primary" onclick="openModal('registerModal')">Registrarse</button>
+    </div>
+    <!-- Usuario logueado -->
+    <div id="userMenu" class="user-menu hidden">
+      <div class="points-badge" id="pointsBadge">
+        <span class="points-icon">◆</span>
+        <span id="pointsCount">0</span> pts
+      </div>
+      <button class="cart-btn" onclick="toggleCart()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cartCount">0</span>
+      </button>
+      <div class="avatar-wrap" onclick="toggleUserDropdown()">
+        <div class="avatar" id="avatarInitial">U</div>
+        <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="user-dropdown hidden" id="userDropdown">
+        <div class="dropdown-header">
+          <span id="dropdownName">Usuario</span>
+          <span class="role-tag" id="roleTag">cliente</span>
+        </div>
+        <a href="#" onclick="showPage('profile')">Mi perfil</a>
+        <a href="#" onclick="showPage('history')" id="historyLink">Historial de compras</a>
+        <a href="#" onclick="showPage('adminPanel')" id="adminLink" class="hidden">Panel Admin</a>
+        <hr/>
+        <a href="#" class="logout-link" onclick="logout()">Cerrar sesión</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════
+     LAYOUT PRINCIPAL
+══════════════════════════════════════════════ -->
+<div class="layout">
+
+  <!-- SIDEBAR DE BÚSQUEDA / FILTROS -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__header">
+      <span>Filtros</span>
+      <button class="sidebar-toggle-close" onclick="toggleSidebar()">✕</button>
+    </div>
+
+    <div class="filter-section">
+      <h4>Categorías</h4>
+      <ul class="filter-list" id="categoryFilter">
+        <li><label><input type="checkbox" value="electronics" onchange="applyFilters()"> Electrónica</label></li>
+        <li><label><input type="checkbox" value="clothing" onchange="applyFilters()"> Ropa</label></li>
+        <li><label><input type="checkbox" value="home" onchange="applyFilters()"> Hogar</label></li>
+        <li><label><input type="checkbox" value="sports" onchange="applyFilters()"> Deportes</label></li>
+        <li><label><input type="checkbox" value="beauty" onchange="applyFilters()"> Belleza</label></li>
+        <li><label><input type="checkbox" value="food" onchange="applyFilters()"> Alimentos</label></li>
+      </ul>
+    </div>
+
+    <div class="filter-section">
+      <h4>Precio</h4>
+      <div class="price-range">
+        <input type="range" id="priceMin" min="0" max="5000000" step="10000" value="0" oninput="updatePriceLabel()" onchange="applyFilters()"/>
+        <input type="range" id="priceMax" min="0" max="5000000" step="10000" value="5000000" oninput="updatePriceLabel()" onchange="applyFilters()"/>
+        <div class="price-labels">
+          <span id="priceMinLabel">$0</span>
+          <span id="priceMaxLabel">$5.000.000</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Ordenar por</h4>
+      <select id="sortBy" onchange="applyFilters()" class="filter-select">
+        <option value="relevance">Relevancia</option>
+        <option value="price_asc">Precio: menor a mayor</option>
+        <option value="price_desc">Precio: mayor a menor</option>
+        <option value="name_asc">Nombre A–Z</option>
+        <option value="newest">Más recientes</option>
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <h4>Solo con descuento</h4>
+      <label class="toggle-label">
+        <input type="checkbox" id="onSaleOnly" onchange="applyFilters()"/>
+        <span class="toggle-slider"></span>
+        <span>En oferta</span>
+      </label>
+    </div>
+
+    <button class="btn btn--outline full-width" onclick="clearFilters()">Limpiar filtros</button>
+  </aside>
+
+  <!-- BOTÓN ABRIR SIDEBAR (mobile / escritorio colapsado) -->
+  <button class="sidebar-open-btn" id="sidebarOpenBtn" onclick="toggleSidebar()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    Filtros
+  </button>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ── PÁGINA: HOME ── -->
+    <section class="page active" id="page-home">
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero__text">
+          <span class="hero__label">Nueva colección 2025</span>
+          <h1 class="hero__title">Todo lo que<br/><em>necesitas,</em><br/>aquí.</h1>
+          <p class="hero__sub">Descubre miles de productos con los mejores precios y envíos rápidos a todo el país.</p>
+          <div class="hero__actions">
+            <button class="btn btn--primary btn--lg" onclick="showPage('categories')">Explorar tienda</button>
+            <button class="btn btn--ghost btn--lg" onclick="showPage('promos')">Ver ofertas</button>
+          </div>
+        </div>
+        <div class="hero__visual">
+          <div class="hero__blob"></div>
+          <div class="hero__cards">
+            <div class="floating-card fc1">📱 <span>Electrónica</span></div>
+            <div class="floating-card fc2">👟 <span>Moda</span></div>
+            <div class="floating-card fc3">🏠 <span>Hogar</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-bar">
+        <div class="stat"><span class="stat-num">10K+</span><span class="stat-label">Productos</span></div>
+        <div class="stat"><span class="stat-num">50K+</span><span class="stat-label">Clientes</span></div>
+        <div class="stat"><span class="stat-num">99%</span><span class="stat-label">Satisfacción</span></div>
+        <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Soporte</span></div>
+      </div>
+
+      <!-- Productos destacados -->
+      <div class="section-header">
+        <h2>Productos destacados</h2>
+        <a href="#" onclick="showPage('categories')" class="see-all">Ver todos →</a>
+      </div>
+      <div class="products-grid" id="featuredProducts">
+        <div class="loading-skeleton"></div>
+        <div class="loading-skeleton"></div>
+        <div class="loading-skeleton"></div>
+        <div class="loading-skeleton"></div>
+      </div>
+
+      <!-- Categorías -->
+      <div class="section-header">
+        <h2>Categorías populares</h2>
+      </div>
+      <div class="categories-strip" id="categoriesStrip">
+        <div class="cat-card" onclick="filterByCategory('electronics')"><span>📱</span><p>Electrónica</p></div>
+        <div class="cat-card" onclick="filterByCategory('clothing')"><span>👕</span><p>Ropa</p></div>
+        <div class="cat-card" onclick="filterByCategory('home')"><span>🛋️</span><p>Hogar</p></div>
+        <div class="cat-card" onclick="filterByCategory('sports')"><span>⚽</span><p>Deportes</p></div>
+        <div class="cat-card" onclick="filterByCategory('beauty')"><span>💄</span><p>Belleza</p></div>
+        <div class="cat-card" onclick="filterByCategory('food')"><span>🥗</span><p>Alimentos</p></div>
+      </div>
+    </section>
+
+    <!-- ── PÁGINA: CATEGORÍAS / BÚSQUEDA ── -->
+    <section class="page" id="page-categories">
+      <div class="page-header">
+        <h2 id="categoriesTitle">Todos los productos</h2>
+        <span class="results-count" id="resultsCount">0 resultados</span>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+    <!-- ── PÁGINA: PROMOCIONES ── -->
+    <section class="page" id="page-promos">
+      <div class="promos-header">
+        <h2>🔥 Promociones activas</h2>
+        <p>Aprovecha los mejores descuentos antes de que se agoten</p>
+      </div>
+      <div class="products-grid" id="promoProducts"></div>
+    </section>
+
+    <!-- ── PÁGINA: CONTÁCTANOS ── -->
+    <section class="page" id="page-contact">
+      <div class="contact-layout">
+        <div class="contact-info">
+          <h2>¿Tienes alguna pregunta?</h2>
+          <p>Estamos aquí para ayudarte. Escríbenos o llámanos.</p>
+          <div class="contact-item"><span>📧</span><span>soporte@merkado.co</span></div>
+          <div class="contact-item"><span>📞</span><span>+57 (1) 234-5678</span></div>
+          <div class="contact-item"><span>🕐</span><span>Lun–Vie 8am–6pm</span></div>
+          <div class="contact-item"><span>📍</span><span>Bogotá, Colombia</span></div>
+        </div>
+        <form class="contact-form" onsubmit="sendContact(event)">
+          <h3>Envíanos un mensaje</h3>
+          <input type="text" placeholder="Tu nombre" required/>
+          <input type="email" placeholder="Correo electrónico" required/>
+          <select>
+            <option>Selecciona un asunto</option>
+            <option>Problema con pedido</option>
+            <option>Devolución / reembolso</option>
+            <option>Información de producto</option>
+            <option>Otro</option>
+          </select>
+          <textarea placeholder="Tu mensaje…" rows="4" required></textarea>
+          <button type="submit" class="btn btn--primary">Enviar mensaje</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── PÁGINA: PERFIL CLIENTE ── -->
+    <section class="page" id="page-profile">
+      <div class="profile-layout">
+        <div class="profile-card">
+          <div class="profile-avatar-lg" id="profileAvatarLg">U</div>
+          <h3 id="profileName">—</h3>
+          <p id="profileEmail">—</p>
+          <div class="points-display">
+            <span class="points-icon-lg">◆</span>
+            <div>
+              <span class="points-big" id="profilePoints">0</span>
+              <span class="points-label-sm">puntos disponibles</span>
+            </div>
+          </div>
+          <div class="points-info">
+            <p>$100 COP = 1 punto</p>
+            <p>Máximo descuento: 35% del total</p>
+          </div>
+        </div>
+        <div class="profile-details">
+          <h3>Mis datos</h3>
+          <form id="profileForm" onsubmit="updateProfile(event)" class="profile-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nombres</label>
+                <input type="text" id="pfFirstName" placeholder="Nombres"/>
+              </div>
+              <div class="form-group">
+                <label>Apellidos</label>
+                <input type="text" id="pfLastName" placeholder="Apellidos"/>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Documento de identidad</label>
+                <input type="text" id="pfDocument" placeholder="CC / NIT"/>
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="pfPhone" placeholder="+57 300 000 0000"/>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label>Dirección</label>
+              <input type="text" id="pfAddress" placeholder="Calle, Carrera, Apto…"/>
+            </div>
+            <div class="form-group full">
+              <label>Correo electrónico</label>
+              <input type="email" id="pfEmail" placeholder="correo@ejemplo.com"/>
+            </div>
+            <button type="submit" class="btn btn--primary">Guardar cambios</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PÁGINA: HISTORIAL DE COMPRAS ── -->
+    <section class="page" id="page-history">
+      <div class="page-header">
+        <h2>Historial de compras</h2>
+        <div class="history-summary">
+          <span>Total gastado: <strong id="totalSpent">$0</strong></span>
+          <span>Puntos acumulados: <strong id="totalPoints">0 ◆</strong></span>
+        </div>
+      </div>
+      <div class="history-table-wrap">
+        <table class="history-table" id="historyTable">
+          <thead>
+            <tr>
+              <th>Factura</th>
+              <th>Fecha</th>
+              <th>Producto</th>
+              <th>Cant.</th>
+              <th>Valor unit.</th>
+              <th>Descuento</th>
+              <th>Total</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr><td colspan="8" class="empty-row">No hay compras registradas aún.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── PÁGINA: PANEL ADMINISTRADOR ── -->
+    <section class="page" id="page-adminPanel">
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('clients', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Gestión de clientes
+        </button>
+        <button class="admin-tab" onclick="switchAdminTab('products', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Gestión de productos
+        </button>
+      </div>
+
+      <!-- GESTIÓN DE CLIENTES -->
+      <div class="admin-panel active" id="adminClients">
+        <div class="admin-toolbar">
+          <input type="text" placeholder="Buscar cliente…" oninput="filterClients(this.value)" class="admin-search"/>
+          <span class="admin-count" id="clientsCount">0 clientes</span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="clientsTable">
+            <thead>
+              <tr>
+                <th>ID</th><th>Documento</th><th>Nombres</th><th>Apellidos</th>
+                <th>Teléfono</th><th>Dirección</th><th>Correo</th>
+                <th>Compras</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="clientsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- GESTIÓN DE PRODUCTOS -->
+      <div class="admin-panel" id="adminProducts">
+        <div class="admin-toolbar">
+          <input type="text" placeholder="Buscar producto…" oninput="filterProducts(this.value)" class="admin-search"/>
+          <button class="btn btn--primary btn--sm" onclick="openProductModal('new')">
+            + Nuevo producto
+          </button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="productsTable">
+            <thead>
+              <tr>
+                <th>ID</th><th>Nombre</th><th>Marca</th><th>Proveedor</th>
+                <th>Disponible</th><th>Precio</th><th>Estado</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="productsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PANEL CARRITO
+══════════════════════════════════════════════ -->
+<div class="cart-overlay hidden" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-panel hidden" id="cartPanel">
+  <div class="cart-header">
+    <h3>Tu carrito</h3>
+    <button onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="empty-cart">
+      <span>🛒</span>
+      <p>Tu carrito está vacío</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="points-redeem" id="pointsRedeem">
+      <label class="toggle-label">
+        <input type="checkbox" id="redeemPoints" onchange="togglePointsRedeem()"/>
+        <span class="toggle-slider"></span>
+        <span>Redimir puntos (<span id="redeemablePoints">0</span> disponibles)</span>
+      </label>
+      <div class="redeem-input hidden" id="redeemInputWrap">
+        <input type="number" id="pointsToRedeem" placeholder="Puntos a usar" oninput="calcRedeem()"/>
+        <span class="redeem-hint" id="redeemHint">Descuento: $0</span>
+      </div>
+    </div>
+    <div class="cart-totals">
+      <div class="total-row"><span>Subtotal</span><span id="cartSubtotal">$0</span></div>
+      <div class="total-row discount-row hidden" id="discountRow"><span>Descuento puntos</span><span id="cartDiscount">-$0</span></div>
+      <div class="total-row total-final"><span>Total</span><span id="cartTotal">$0</span></div>
+    </div>
+    <button class="btn btn--primary full-width" onclick="checkout()">Finalizar compra</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MODALES
+══════════════════════════════════════════════ -->
+<!-- Modal base overlay -->
+<div class="modal-overlay hidden" id="modalOverlay" onclick="closeAllModals()"></div>
+
+<!-- LOGIN -->
+<div class="modal hidden" id="loginModal">
+  <div class="modal-header">
+    <h3>Ingresar</h3>
+    <button onclick="closeAllModals()">✕</button>
+  </div>
+  <form onsubmit="login(event)" class="modal-form">
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="loginEmail" placeholder="correo@ejemplo.com" required/>
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" required/>
+    </div>
+    <div class="form-error hidden" id="loginError"></div>
+    <button type="submit" class="btn btn--primary full-width">Ingresar</button>
+    <p class="modal-switch">¿No tienes cuenta? <a href="#" onclick="switchModal('loginModal','registerModal')">Regístrate</a></p>
+  </form>
+</div>
+
+<!-- REGISTRO -->
+<div class="modal hidden" id="registerModal">
+  <div class="modal-header">
+    <h3>Crear cuenta</h3>
+    <button onclick="closeAllModals()">✕</button>
+  </div>
+  <form onsubmit="register(event)" class="modal-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombres</label>
+        <input type="text" id="regFirstName" placeholder="Nombres" required/>
+      </div>
+      <div class="form-group">
+        <label>Apellidos</label>
+        <input type="text" id="regLastName" placeholder="Apellidos" required/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Documento de identidad</label>
+      <input type="text" id="regDocument" placeholder="Número de documento" required/>
+    </div>
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="regEmail" placeholder="correo@ejemplo.com" required/>
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="regPassword" placeholder="Mínimo 8 caracteres" required minlength="8"/>
+    </div>
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="text" id="regPhone" placeholder="+57 300 000 0000"/>
+    </div>
+    <div class="form-error hidden" id="registerError"></div>
+    <button type="submit" class="btn btn--primary full-width">Crear cuenta</button>
+    <p class="modal-switch">¿Ya tienes cuenta? <a href="#" onclick="switchModal('registerModal','loginModal')">Ingresar</a></p>
+  </form>
+</div>
+
+<!-- DETALLE PRODUCTO -->
+<div class="modal modal--lg hidden" id="productModal">
+  <div class="modal-header">
+    <h3 id="modalProductName">Producto</h3>
+    <button onclick="closeAllModals()">✕</button>
+  </div>
+  <div class="product-detail-layout" id="productDetailContent"></div>
+</div>
+
+<!-- ADMIN: AGREGAR/EDITAR PRODUCTO -->
+<div class="modal modal--lg hidden" id="adminProductModal">
+  <div class="modal-header">
+    <h3 id="adminModalTitle">Nuevo producto</h3>
+    <button onclick="closeAllModals()">✕</button>
+  </div>
+  <form onsubmit="saveProduct(event)" class="modal-form" id="adminProductForm">
+    <input type="hidden" id="apId"/>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre del producto</label>
+        <input type="text" id="apName" required/>
+      </div>
+      <div class="form-group">
+        <label>Marca</label>
+        <input type="text" id="apBrand" required/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Proveedor</label>
+        <input type="text" id="apSupplier" required/>
+      </div>
+      <div class="form-group">
+        <label>Categoría</label>
+        <select id="apCategory" required>
+          <option value="">Seleccionar…</option>
+          <option value="electronics">Electrónica</option>
+          <option value="clothing">Ropa</option>
+          <option value="home">Hogar</option>
+          <option value="sports">Deportes</option>
+          <option value="beauty">Belleza</option>
+          <option value="food">Alimentos</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Precio (COP)</label>
+        <input type="number" id="apPrice" min="0" step="100" required/>
+      </div>
+      <div class="form-group">
+        <label>Cantidad disponible</label>
+        <input type="number" id="apStock" min="0" required/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Descuento (%)</label>
+        <input type="number" id="apDiscount" min="0" max="99" value="0"/>
+      </div>
+      <div class="form-group">
+        <label>Imagen URL</label>
+        <input type="text" id="apImage" placeholder="https://…"/>
+      </div>
+    </div>
+    <div class="form-group full">
+      <label>Descripción</label>
+      <textarea id="apDescription" rows="3"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn--ghost" onclick="closeAllModals()">Cancelar</button>
+      <button type="submit" class="btn btn--primary" id="apSubmitBtn">Guardar producto</button>
+    </div>
+  </form>
+</div>
+
+<!-- ADMIN: DETALLE CLIENTE (historial compras) -->
+<div class="modal modal--xl hidden" id="clientDetailModal">
+  <div class="modal-header">
+    <h3 id="clientDetailName">Cliente</h3>
+    <button onclick="closeAllModals()">✕</button>
+  </div>
+  <div id="clientDetailContent" class="client-detail-content"></div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast hidden" id="toast">
+  <span id="toastMsg">Mensaje</span>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-icon">⬡</span> Merkado
+    </div>
+    <p>© 2025 Merkado. Todos los derechos reservados.</p>
+    <div class="footer-links">
+      <a href="#">Términos</a>
+      <a href="#">Privacidad</a>
+      <a href="#">Soporte</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/points.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
