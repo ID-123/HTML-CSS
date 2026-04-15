@@ -12,18 +12,166 @@
         <p><em>Common parameters</em></p>
     </header>
     <nav id="navBar">
+        <button id="sideMenuAccess"> ☰ </button>
         <a href="#flexbox">Flexbox</a>
         <a href="#grid">Grid</a>
     </nav>
+    <aside id="sideMenu">
+        <ul>
+            <li>
+                <button class="sideOption">Flexbox</button>
+                <ul class="content">
+                    <li><a href="#contenedorPadre">Contenedor Padre</a></li>
+                    <li><a href="#contenedorHijo">Contenedor Hijo</a></li>
+                </ul>
+            </li>
+            <li>
+                <button class="sideOption">Grid</button>
+                <ul class="content">
+                    <li><a href="#gridAlignContent">align-content</a></li>
+                    <li><a href="#gridAlignItems">align-items</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+    <div id="overlay"></div>
     <main>
         <section id="flexbox">
             <h2>Flexbox</h2>
             <p>Template text</p>
-            <div class="objectBox"> <!-- Contenedor de los ejemplos-->
-                <div class="itemExample"> <!-- Ejemplo -->
+            <h3 id="contenedorPadre">Propiedades del contenedor padre</h3>
+            <!-- Contenedor de los ejemplos-->
+            <div class="objectBox"> 
+                <!-- Ejemplo -->
+                <div class="itemExample">
                     <h3>flex-direction</h3>
                     <p>Specifies the direction of the flexible items.</p>
-                    <div class="demoBox">
+                    <div class="demoBox" id="demoFlexDirection">
+                        <div class="item">row</div>
+                        <div class="item">row-reverse</div>
+                        <div class="item">column</div>
+                        <div class="item">column-reverse</div>
+                        <div class="item">initial</div>
+                        <div class="item">inherit</div>
+                    </div>
+                </div>
+                <div class="itemExample">
+                    <h3>flex-wrap</h3>
+                    <p>Specifies whether the flexible items should wrap or not.</p>
+                    <div class="demoBox" id="demoFlexWrap">
+                        <div class="item">nowrap</div>
+                        <div class="item">wrap</div>
+                        <div class="item">wrap-reverse</div>
+                        <div class="item">initial</div>
+                        <div class="item">inherit</div>
+                    </div>
+                </div>
+                <div class="itemExample">
+                    <h3>justify-content</h3>
+                    <p>Aligns the flexible container's items when the items don't use all available space on the X-axis (horizontally).</p>
+                    <div class="demoBox" id="demoJustifyContent">
+                        <div class="item">flex-start</div>
+                        <div class="item">flex-end</div>
+                        <div class="item">center</div>
+                        <div class="item">space-between</div>
+                        <div class="item">space-around</div>
+                        <div class="item">space-evenly</div>
+                        <div class="item">initial</div>
+                        <div class="item">inherit</div>
+                    </div>
+                </div>
+                <div class="itemExample">
+                    <h3>align-items</h3>
+                    <p>Specifies the default alignment for items inside a flexbox or grid container.</p>
+                    <div class="demoBox" id="demoAlignItems">
+                        <div class="item">normal</div>
+                        <div class="item">stretch</div>
+                        <div class="item">center</div>
+                        <div class="item">flex-start</div>
+                        <div class="item">flex-end</div>
+                        <div class="item">start</div>
+                        <div class="item">end</div>
+                        <div class="item">baseline</div>
+                        <div class="item">initial</div>
+                        <div class="item">inherit</div>
+                    </div>
+                </div>
+                <div class="itemExample">
+                    <h3>align-content</h3>
+                    <p>Specifies how flex lines are distributed along the cross axis in a flexbox container.</p>
+                    <div class="demoBox" id="demoAlignContent">
+                        <div class="item">stretch</div>
+                        <div class="item">center</div>
+                        <div class="item">flex-start</div>
+                        <div class="item">flex-end</div>
+                        <div class="item">space-between</div>
+                        <div class="item">space-around</div>
+                        <div class="item">space-evenly</div>
+                        <div class="item">initial</div>
+                        <div class="item">inherit</div>
+                    </div>
+                </div>
+                <div class="itemExample">
+                    <h3>gap</h3>
+                    <p>Defines the size of the gap between the rows and the columns in flexbox, grid or multi-column layout.</p>
+                    <div class="demoBox" id="demoGap">
+                        <div class="item">A</div>
+                        <div class="item">B</div>
+                        <div class="item">C</div>
+                        <div class="item">D</div>
+                    </div>
+                </div>
+            </div>
+            <h3 id="contenedorHijo">Propiedades del contenedor hijo</h3>
+            <div class="objectBox">
+                <div class="itemExample">
+                    <h3>flex-grow</h3>
+                    <p>Specifies how much the item will grow relative to the rest of the flexible items inside the same container.</p>
+                    <div class="demoBox" id="demoFlexGrow">
+                        <div class="item">A</div>
+                        <div class="item">B</div>
+                        <div class="item">C</div>
+                        <div class="item">D</div>
+                    </div>
+                </div>
+                <div class="itemExample">
+                    <h3>flex-shrink</h3>
+                    <p>Specifies how the item will shrink relative to the rest of the flexible items inside the same container.</p>
+                    <div class="demoBox" id="demoFlexShrink">
+                        <div class="item">A</div>
+                        <div class="item">B</div>
+                        <div class="item">C</div>
+                        <div class="item">D</div>
+                    </div>
+                </div>
+                <div class="itemExample">
+                    <h3>flex-basis</h3>
+                    <p>Specifies the initial length of a flexible item.</p>
+                    <div class="demoBox" id="demoFlexBasis">
+                        <div class="item">A</div>
+                        <div class="item">B</div>
+                        <div class="item">auto</div>
+                        <div class="item">D</div>
+                    </div>
+                </div>
+                <div class="itemExample">
+                    <h3>align-self</h3>
+                    <p>Specifies the alignment in the block direction for the selected item inside a flexbox or grid container.</p>
+                    <div class="demoBox" id="demoAlignSelf">
+                        <div class="item">auto</div>
+                        <div class="item">stretch</div>
+                        <div class="item">center</div>
+                        <div class="item">flex-start</div>
+                        <div class="item">flex-end</div>
+                        <div class="item">baseline</div>
+                        <div class="item">initial</div>
+                        <div class="item">inherit</div>
+                    </div>
+                </div>
+                <div class="itemExample">
+                    <h3>order</h3>
+                    <p>Specifies the visual order of a flex item or grid item in a flex or grid container.</p>
+                    <div class="demoBox" id="demoOrder">
                         <div class="item">A</div>
                         <div class="item">B</div>
                         <div class="item">C</div>
@@ -35,7 +183,29 @@
         <section id="grid">
             <h2>Grid Layout</h2>
             <p>Template text</p>
+            <div class="itemExample">
+                    <h3 id="gridAlignContent">align-content</h3>
+                    <p>Vertically aligns the whole grid inside the container.</p>
+                    <div class="demoBox" id="demoOrder">
+                        <div class="item">A</div>
+                        <div class="item">B</div>
+                        <div class="item">C</div>
+                        <div class="item">D</div>
+                    </div>
+                </div>
+            <div class="itemExample">
+                    <h3 id="gridAlignItems">align-items</h3>
+                    <p>Specifies the default alignment for items inside a flexbox or grid container.</p>
+                    <div class="demoBox" id="demoOrder">
+                        <div class="item">A</div>
+                        <div class="item">B</div>
+                        <div class="item">C</div>
+                        <div class="item">D</div>
+                    </div>
+                </div>
         </section>
     </main>
+    <script src="flexBoxExcercise.js"></script>
 </body>
 </html>
+
