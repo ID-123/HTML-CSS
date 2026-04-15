@@ -21,6 +21,7 @@ body{
     flex-direction: row;
     gap: 25px;
     padding: 15px;
+    background-color: aquamarine;
     
 }
 
@@ -37,6 +38,46 @@ body{
     text-transform: uppercase;
     text-shadow: 3px 3px 5px red; /* Requiere 4 parámetros (desp hor, desp ver, desenfoque, color sombra) */
     background-color: lightseagreen;
+}
+
+#overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    z-index: 199;
+    display: none;
+}
+
+#overlay.active{
+    display: block;
+}
+
+.content{
+    display: none;
+}
+
+.content.active{
+    display: block;
+}
+
+#sideMenu{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 300px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 200;
+    background-color: forestgreen;
+}
+
+#sideMenu.open{
+    transform: translateX(0%);
 }
 
 .objectBox{
@@ -63,4 +104,14 @@ body{
     padding: 15px;
     border-radius: 10px;
     color: mediumpurple;
+}
+
+#demoFlexDirection{
+    display: flex;
+    flex-direction: column;
+}
+
+#demoFlexWrap{
+    display: flex;
+    flex-wrap: wrap;
 }
