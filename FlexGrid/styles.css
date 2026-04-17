@@ -1,0 +1,305 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --mini: 6px; 
+    --small: 8px;
+    --medium: 12px;
+    --normal: 16px;
+    --section: 24px;
+    --wide: 36px; 
+    --huge: 42px;
+}
+
+h1{
+    font-size: var(--huge);
+} 
+
+h2{
+    font-size: var(--wide);
+}
+
+h3{
+    font-size: var(--section);
+}
+
+p{
+    font-size: var(--medium);
+}
+
+body{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: var(--normal);
+    line-height: 1.5; /* Define el espacio vertical entre lineas de texto.*/
+    min-height: 100vh; /* 1vh representa el 1% de la pantalla visible del navegador.*/
+    background-color: #e3dac9;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+#mainHead{
+    top: 0;
+    height: 85px;
+    display: flex;
+    padding: var(--medium);
+    justify-content: space-between;
+    align-items: center;
+    background-color: aquamarine;
+    border-bottom: dotted beige;
+    position: sticky;
+    z-index: 100;    
+}
+
+#sideMenuAccess{
+    border: none;
+    background-color: chocolate;
+    font-size: small;
+    cursor: pointer; /* Cambia el mouse al colocarse encima */
+    padding: var(--normal);
+    border-radius: var(--mini);
+}
+
+.branding{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--mini);
+}
+
+#navBar{
+    display: flex;
+    gap: var(--medium);
+}
+
+#navBar a{
+    text-decoration: none;
+    background-color: yellow;
+    border-radius: var(--mini);
+    padding: 8px 8px;
+}
+
+/* Funciona solo cuando el mouse está encima. */
+#navBar a:hover{
+    text-shadow: 3px 3px 5px black; /* Requiere 4 parámetros (desp hor, desp ver, desenfoque, color sombra) */
+    background-color: lightseagreen;
+}
+
+#sideMenu{
+    width: 200px;
+    background-color: #ff474c;
+    border-right: dotted beige;
+    padding: var(--normal);
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: fixed;
+    top: 85px;
+    left: -220px;   /* oculto */
+    height: calc(100vh - 85px);
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+#sideMenu.show{
+    left: 0;
+}
+
+#sideMenu ul{
+    list-style: none;
+}
+
+#sideMenu a{
+    text-decoration: none;
+    color: black;
+    font-size: var(--medium);
+}
+
+#sideMenu a:hover{
+    background-color: cyan;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.3);
+    display:none;
+    z-index:150;
+}
+
+#overlay.active{
+    display:block;
+}
+
+.layout{
+    display: grid;
+    grid-template-columns: 1fr; /* Hace que la segunda columna ocupe el espacio disponible */
+    flex: 1; /* Fuerza el item a repartir el espacio equitativamente. */
+    width: 100%;
+}
+
+main{
+    padding: 30px;
+    min-width: 0;
+    width: 100%;
+}
+
+section{
+    margin-top: var(--normal);
+    background-color: lightpink;
+    box-shadow: 5px 5px pink;
+    padding: var(--medium);
+    border-radius: var(--mini);
+}
+
+.objectBox{
+    display:flex;
+    gap:16px;
+    overflow-x:auto; /* Scroll interno, no externo */
+    overflow-y:hidden;
+    width:100%; /* Ocupa solo el ancho del padre */
+    max-width:100%; /* Nunca se expande más que la pantalla */
+    padding-bottom: 10px;
+    scroll-snap-type:x mandatory;
+}
+
+/* Esconde la barra de deslizamiento */
+.objectBox::-webkit-scrollbar{
+    display: none;
+}
+
+.itemExample{
+    background-color: beige;
+    box-shadow: 5px 5px #ffffc5;
+    border-radius: 10px;
+    padding: var(--normal);
+    height: fit-content;
+    width: 320px;
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--small);
+    flex-shrink:0; /* Cada tarjeta conserva tamaño real */
+    scroll-snap-align:start; /* Cada tarjeta es un punto de anclaje del slider */
+}
+
+/* Configuracion para moviles */
+@media (max-width:768px){
+    .layout{
+        grid-template-columns:1fr;
+    }
+    #sideMenu{
+        position:fixed;
+        top:85px;
+        left:-220px;
+        width:200px;
+        height:calc(100vh - 85px);
+        transition:left .3s ease;
+        z-index:1000;
+    }
+    #sideMenu.show{
+        left:0;
+    }
+    #overlay{
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.4);
+        display:none;
+        z-index:900;
+    }
+    #overlay.active{
+        display:block;
+    }
+}
+
+.itemExample h3{
+    font-weight: 1250;
+}
+
+.controls{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.controls button{
+    cursor: pointer;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.demoBox{
+    background-color: #ffc067;
+    border: dotted beige;
+    border-radius: var(--mini);
+    padding: var(--small);
+    min-height: 200px;
+}
+
+.item{
+    background-color: orange; 
+    border-radius: var(--mini);
+    padding: var(--mini);
+    border: dotted coral;
+    font-size: var(--medium);
+    height: 50px;
+    width: 50px;
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item:nth-child(2){
+    background-color: aqua;
+}
+
+.demoFlexDirection{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    min-height: 200px;
+}
+
+.demoFlexWrap{
+    display: flex;
+    width: 100%;
+    padding: 5px;
+    gap: 15px;
+}
+
+.demoAlignItems{
+    display: flex;  
+    gap: 10px;
+    height: 200px;
+}
+
+.demoAlignItems .item{
+    padding: 0;
+    width: 40px;
+}
+
+/* 'nth-child' selecciona un elemento basado en su posición dentro de un grupo de hermanos. */
+.demoAlignItems .item:nth-child(1){ height:30px; }
+.demoAlignItems .item:nth-child(2){ height:50px; }
+.demoAlignItems .item:nth-child(3){ height:70px; }
+.demoAlignItems .item:nth-child(4){ height:90px; }
+
+.demoJustifyContent{
+    display: flex;
+    gap: 0;
+    height: 200px;
+    justify-content: flex-start;
+}
+
+footer{
+    background-color:khaki;
+    padding: var(--medium);
+    border-top: dotted beige;
+}
